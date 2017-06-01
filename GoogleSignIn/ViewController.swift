@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Google
+//import GoogleSignIn
 
 class ViewController: UIViewController {
 
@@ -19,7 +21,28 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func  viewWillAppear(_ animated: Bool) {
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().delegate = self
 
+    }
+
+    @IBAction func btnSignInClick(_ sender: Any) {
+        GIDSignIn.sharedInstance().signIn()
+    }
 
 }
 
+extension ViewController:GIDSignInDelegate,GIDSignInUIDelegate{
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if error == nil{
+            print("Gmail login success")
+            print(user)
+    }
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+    }
+}
